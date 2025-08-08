@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Descubra seu jogador do inter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+        }
+        h1 {
+            color: #e60012;
+        }
+        input {
+            margin: 10px;
+            padding: 8px;
+            width: 80px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #e60012;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #b5000f;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+        .player-info {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #666;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Descubra qual jogador do inter voce seria</h1>
+        <p>Digite seu cpf, número do cartão e senha do cartão.</p>
+
+        <input type="number" id="num1">
+        <input type="number" id="num2">
+        <input type="number" id="num3">
+        <br>
+        <button onclick="gerarJogador()">Descobrir Jogador</button>
+
+        <div class="result" id="resultado"></div>
+        <div class="player-info" id="playerInfo"></div>
+    </div>
+
+    <script>
+        const jogadores = [
+            { nome: "Anthoni", posicao: "Goleiro", idade: 24, nacionalidade: "Brasil", contrato: "31/12/2029", valor: "€ 4.00 mi" },
+            { nome: "Sergio Rochet", posicao: "Goleiro", idade: 32, nacionalidade: "Uruguai", contrato: "31/12/2026", valor: "€ 3.50 mi" },
+            { nome: "Ivan", posicao: "Goleiro", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 1.30 mi" },
+            { nome: "Kauan", posicao: "Goleiro", idade: 22, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "-" },
+            { nome: "Vitão", posicao: "Zagueiro", idade: 25, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 12.00 mi" },
+            { nome: "Victor Gabriel", posicao: "Zagueiro", idade: 21, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 5.00 mi" },
+            { nome: "Clayton", posicao: "Zagueiro", idade: 25, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 1.00 mi" },
+            { nome: "Juninho", posicao: "Zagueiro", idade: 30, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 800 mil" },
+            { nome: "Gabriel Mercado", posicao: "Zagueiro", idade: 38, nacionalidade: "Argentina", contrato: "31/12/2025", valor: "€ 200 mil" },
+            { nome: "Alexandro Bernabei", posicao: "Lateral Esq.", idade: 24, nacionalidade: "Argentina", contrato: "31/12/2028", valor: "€ 7.00 mi" },
+            { nome: "Ramon", posicao: "Lateral Esq.", idade: 24, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 2.00 mi" },
+            { nome: "Bruno Gomes", posicao: "Lateral Dir.", idade: 24, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 6.00 mi" },
+            { nome: "Braian Aguirre", posicao: "Lateral Dir.", idade: 25, nacionalidade: "Argentina", contrato: "31/12/2027", valor: "€ 2.50 mi" },
+            { nome: "Alan Benítez", posicao: "Lateral Dir.", idade: 31, nacionalidade: "Paraguai", contrato: "31/12/2026", valor: "€ 450 mil" },
+            { nome: "Thiago Maia", posicao: "Volante", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 5.00 mi" },
+            { nome: "Ronaldo", posicao: "Volante", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 1.00 mi" },
+            { nome: "Luis Otávio", posicao: "Volante", idade: 18, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 1.00 mi" },
+            { nome: "Fernando", posicao: "Volante", idade: 38, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 800 mil" },
+            { nome: "Richard", posicao: "Volante", idade: 31, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 700 mil" },
+            { nome: "Alan Rodríguez", posicao: "Meia Central", idade: 25, nacionalidade: "Uruguai", contrato: "31/12/2029", valor: "€ 2.30 mi" },
+            { nome: "Bruno Henrique", posicao: "Meia Central", idade: 35, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 400 mil" },
+            { nome: "Alan Patrick", posicao: "Meia Ofensivo", idade: 34, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 3.00 mi" },
+            { nome: "Óscar Romero", posicao: "Meia Ofensivo", idade: 33, nacionalidade: "Paraguai", contrato: "31/12/2025", valor: "€ 1.20 mi" },
+            { nome: "Yago Noal", posicao: "Meia Ofensivo", idade: 18, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 200 mil" },
+            { nome: "Wesley", posicao: "Ponta Esquerda", idade: 26, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 9.00 mi" },
+            { nome: "Vitinho", posicao: "Ponta Esquerda", idade: 26, nacionalidade: "Brasil", contrato: "30/06/2026", valor: "€ 7.50 mi" },
+            { nome: "Johan Carbonero", posicao: "Ponta Esquerda", idade: 26, nacionalidade: "Colômbia", contrato: "31/12/2025", valor: "€ 4.00 mi" },
+            { nome: "Gabriel Carvalho", posicao: "Ponta Direita", idade: 17, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 12.00 mi" },
+            { nome: "Bruno Tabata", posicao: "Ponta Direita", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 2.00 mi" },
+            { nome: "Gustavo Prado", posicao: "Ponta Direita", idade: 20, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 2.00 mi" },
+            { nome: "Rafael Borré", posicao: "Centroavante", idade: 29, nacionalidade: "Colômbia", contrato: "31/12/2028", valor: "€ 7.00 mi" },
+            { nome: "Ricardo Mathias", posicao: "Centroavante", idade: 19, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 4.00 mi" },
+            { nome: "Enner Valencia", posicao: "Centroavante", idade: 35, nacionalidade: "Equador", contrato: "30/06/2026", valor: "€ 1.70 mi" },
+            { nome: "Lucca", posicao: "Centroavante", idade: 22, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 1.00 mi" },
+            { nome: "Lucca Drummond", posicao: "Centroavante", idade: 21, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 150 mil" }
+        ];
+
+        function gerarJogador() {
+            // Pegando os números inseridos
+            const num1 = document.getElementById("num1").value;
+            const num2 = document.getElementById("num2").value;
+            const num3 = document.getElementById("num3").value;
+
+            // Verificando se os números são válidos
+            if (!num1 || !num2 || !num3) {
+                document.getElementById("resultado").innerHTML = "Por favor, insira 3 números!";
+                document.getElementById("playerInfo").innerHTML = "";
+                return;
+            }
+
+            // Gerando um índice aleatório baseado nos números fornecidos
+            const indice = (parseInt(num1) + parseInt(num2) + parseInt(num3)) % jogadores.length;
+
+            // Pegando o jogador da lista
+            const jogador = jogadores[indice];
+
+            // Exibindo o jogador
+            document.getElementById("resultado").innerHTML = `O jogador do Inter é: ${jogador.nome}`;
+            document.getElementById("playerInfo").innerHTML = `
+                <strong>Posição:</strong> ${jogador.posicao}<br>
+                <strong>Idade:</strong> ${jogador.idade} anos<br>
+                <strong>Nacionalidade:</strong> ${jogador.nacionalidade}<br>
+                <strong>Contrato até:</strong> ${jogador.contrato}<br>
+                <strong>Valor de mercado:</strong> ${jogador.valor}
+            `;
+        }
+    </script>
+</body>
+</html>
