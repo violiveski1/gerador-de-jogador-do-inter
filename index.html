@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Descubra seu jogador do inter</title>
+    <title>Descubra seu jogador do Inter</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,12 +57,20 @@
             color: #666;
             text-align: left;
         }
+        .player-image {
+            margin-top: 20px;
+        }
+        .player-image img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Descubra qual jogador do inter voce seria</h1>
-        <p>Digite seu cpf, número do cartão e senha do cartão.</p>
+        <h1>Descubra qual jogador do Inter você seria</h1>
+        <p>Digite seu CPF, número do cartão e senha do cartão.</p>
 
         <input type="number" id="num1">
         <input type="number" id="num2">
@@ -72,76 +80,77 @@
 
         <div class="result" id="resultado"></div>
         <div class="player-info" id="playerInfo"></div>
+        <div class="player-image" id="playerImage"></div>
     </div>
 
     <script>
-        const jogadores = [
-            { nome: "Anthoni", posicao: "Goleiro", idade: 24, nacionalidade: "Brasil", contrato: "31/12/2029", valor: "€ 4.00 mi" },
-            { nome: "Sergio Rochet", posicao: "Goleiro", idade: 32, nacionalidade: "Uruguai", contrato: "31/12/2026", valor: "€ 3.50 mi" },
-            { nome: "Ivan", posicao: "Goleiro", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 1.30 mi" },
-            { nome: "Kauan", posicao: "Goleiro", idade: 22, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "-" },
-            { nome: "Vitão", posicao: "Zagueiro", idade: 25, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 12.00 mi" },
-            { nome: "Victor Gabriel", posicao: "Zagueiro", idade: 21, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 5.00 mi" },
-            { nome: "Clayton", posicao: "Zagueiro", idade: 25, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 1.00 mi" },
-            { nome: "Juninho", posicao: "Zagueiro", idade: 30, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 800 mil" },
-            { nome: "Gabriel Mercado", posicao: "Zagueiro", idade: 38, nacionalidade: "Argentina", contrato: "31/12/2025", valor: "€ 200 mil" },
-            { nome: "Alexandro Bernabei", posicao: "Lateral Esq.", idade: 24, nacionalidade: "Argentina", contrato: "31/12/2028", valor: "€ 7.00 mi" },
-            { nome: "Ramon", posicao: "Lateral Esq.", idade: 24, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 2.00 mi" },
-            { nome: "Bruno Gomes", posicao: "Lateral Dir.", idade: 24, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 6.00 mi" },
-            { nome: "Braian Aguirre", posicao: "Lateral Dir.", idade: 25, nacionalidade: "Argentina", contrato: "31/12/2027", valor: "€ 2.50 mi" },
-            { nome: "Alan Benítez", posicao: "Lateral Dir.", idade: 31, nacionalidade: "Paraguai", contrato: "31/12/2026", valor: "€ 450 mil" },
-            { nome: "Thiago Maia", posicao: "Volante", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 5.00 mi" },
-            { nome: "Ronaldo", posicao: "Volante", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 1.00 mi" },
-            { nome: "Luis Otávio", posicao: "Volante", idade: 18, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 1.00 mi" },
-            { nome: "Fernando", posicao: "Volante", idade: 38, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 800 mil" },
-            { nome: "Richard", posicao: "Volante", idade: 31, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 700 mil" },
-            { nome: "Alan Rodríguez", posicao: "Meia Central", idade: 25, nacionalidade: "Uruguai", contrato: "31/12/2029", valor: "€ 2.30 mi" },
-            { nome: "Bruno Henrique", posicao: "Meia Central", idade: 35, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 400 mil" },
-            { nome: "Alan Patrick", posicao: "Meia Ofensivo", idade: 34, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 3.00 mi" },
-            { nome: "Óscar Romero", posicao: "Meia Ofensivo", idade: 33, nacionalidade: "Paraguai", contrato: "31/12/2025", valor: "€ 1.20 mi" },
-            { nome: "Yago Noal", posicao: "Meia Ofensivo", idade: 18, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 200 mil" },
-            { nome: "Wesley", posicao: "Ponta Esquerda", idade: 26, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 9.00 mi" },
-            { nome: "Vitinho", posicao: "Ponta Esquerda", idade: 26, nacionalidade: "Brasil", contrato: "30/06/2026", valor: "€ 7.50 mi" },
-            { nome: "Johan Carbonero", posicao: "Ponta Esquerda", idade: 26, nacionalidade: "Colômbia", contrato: "31/12/2025", valor: "€ 4.00 mi" },
-            { nome: "Gabriel Carvalho", posicao: "Ponta Direita", idade: 17, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 12.00 mi" },
-            { nome: "Bruno Tabata", posicao: "Ponta Direita", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 2.00 mi" },
-            { nome: "Gustavo Prado", posicao: "Ponta Direita", idade: 20, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 2.00 mi" },
-            { nome: "Rafael Borré", posicao: "Centroavante", idade: 29, nacionalidade: "Colômbia", contrato: "31/12/2028", valor: "€ 7.00 mi" },
-            { nome: "Ricardo Mathias", posicao: "Centroavante", idade: 19, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 4.00 mi" },
-            { nome: "Enner Valencia", posicao: "Centroavante", idade: 35, nacionalidade: "Equador", contrato: "30/06/2026", valor: "€ 1.70 mi" },
-            { nome: "Lucca", posicao: "Centroavante", idade: 22, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 1.00 mi" },
-            { nome: "Lucca Drummond", posicao: "Centroavante", idade: 21, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 150 mil" }
-        ];
+    const githubUser = "violiveski1"; // coloque seu usuário do GitHub aqui
+    const githubRepo = "gerador-de-jogador-do-inter"; // coloque seu repositório aqui
+    const baseURL = `https://raw.githubusercontent.com/${githubUser}/${githubRepo}/main/imagens/`;
 
-        function gerarJogador() {
-            // Pegando os números inseridos
-            const num1 = document.getElementById("num1").value;
-            const num2 = document.getElementById("num2").value;
-            const num3 = document.getElementById("num3").value;
+    const jogadores = [
+        { nome: "Alan Benítez", posicao: "Lateral Dir.", idade: 31, nacionalidade: "Paraguai", contrato: "31/12/2026", valor: "€ 450 mil", imagem: baseURL + "Alan Benítez_Card_BEM_VINDO_ALANBENITEZ_1920x1080_ea597ea1fe.png" },
+        { nome: "Alan Patrick", posicao: "Meia Ofensivo", idade: 34, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 3.00 mi", imagem: baseURL + "Alan Patrick_Banner_Site_Alan_Patrick_2000x2500_8b25480f3e.png" },
+        { nome: "Alan Rodríguez", posicao: "Meia Central", idade: 25, nacionalidade: "Uruguai", contrato: "31/12/2029", valor: "€ 2.30 mi", imagem: baseURL + "Alan Rodríguez_Banner_Site_Alan_Rodriguez_2000x2500_35e28011f9.png" },
+        { nome: "Alexandro Bernabei", posicao: "Lateral Esq.", idade: 24, nacionalidade: "Argentina", contrato: "31/12/2028", valor: "€ 7.00 mi", imagem: baseURL + "Alexandro Bernabei_Apresentacao_Bernabei_Alexandro_Bernabei15_Foto_Ricardo_Duarte_2003_1152x768_fe8b57ab81.jpeg" },
+        { nome: "Anthoni", posicao: "Goleiro", idade: 24, nacionalidade: "Brasil", contrato: "31/12/2029", valor: "€ 4.00 mi", imagem: baseURL + "Anthoni_Banner_Site_Anthoni_2000x2500_e7b9fcc11f.png" },
+        { nome: "Braian Aguirre", posicao: "Lateral Dir.", idade: 25, nacionalidade: "Argentina", contrato: "31/12/2027", valor: "€ 2.50 mi", imagem: baseURL + "Braian Aguirre_Banner_Site_Aguirre_2000x2500_96087bed2e.png" },
+        { nome: "Bruno Gomes", posicao: "Lateral Dir.", idade: 24, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 6.00 mi", imagem: baseURL + "Bruno Gomes_Banner_Site_Bruno_Gomes_2000x2500_6f80602c12.png" },
+        { nome: "Bruno Henrique", posicao: "Meia Central", idade: 35, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 400 mil", imagem: baseURL + "Bruno Henrique_Banner_Site_Bruno_Henrique_2000x2500_891e4ad70f.png" },
+        { nome: "Bruno Tabata", posicao: "Ponta Direita", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 2.00 mi", imagem: baseURL + "Bruno Tabata_Banner_Site_Bruno_Tabata_2000x2500_a3a45796fa.png" },
+        { nome: "Clayton", posicao: "Zagueiro", idade: 25, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 1.00 mi", imagem: baseURL + "Clayton_Banner_Site_Clayton_2000x2500_1f095ec80f.png" },
+        { nome: "Enner Valencia", posicao: "Centroavante", idade: 35, nacionalidade: "Equador", contrato: "30/06/2026", valor: "€ 1.70 mi", imagem: baseURL + "Enner Valencia_Banner_Site_Enner_Valencia_2000x2500_b05070d3cb.png" },
+        { nome: "Fernando", posicao: "Volante", idade: 38, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 800 mil", imagem: baseURL + "Fernando_Banner_Site_Fernando_2000x2500_48c1cfb7f2.png" },
+        { nome: "Gabriel Carvalho", posicao: "Ponta Direita", idade: 17, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 12.00 mi", imagem: baseURL + "Gabriel Carvalho_Banner_Site_Gabriel_Carvalho_2000x2500_12c091e1cd.png" },
+        { nome: "Gabriel Mercado", posicao: "Zagueiro", idade: 38, nacionalidade: "Argentina", contrato: "31/12/2025", valor: "€ 200 mil", imagem: baseURL + "Gabriel Mercado_Banner_Site_Mercado_2000x2500_e3ba7f8526.png" },
+        { nome: "Gustavo Prado", posicao: "Ponta Direita", idade: 20, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 2.00 mi", imagem: baseURL + "Gustavo Prado_Banner_Site_Jogadores_2000x2500_Gustavo_Prad_61ce36501c.png" },
+        { nome: "Ivan", posicao: "Goleiro", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 1.30 mi", imagem: baseURL + "Ivan_Banner_Site_Ivan_2000x2500_39836b372b.png" },
+        { nome: "Johan Carbonero", posicao: "Ponta Esquerda", idade: 26, nacionalidade: "Colômbia", contrato: "31/12/2025", valor: "€ 4.00 mi", imagem: baseURL + "Johan Carbonero_Banner_Site_Carbonero_2000x2500_4480e2d49d.png" },
+        { nome: "Juninho", posicao: "Zagueiro", idade: 30, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 800 mil", imagem: baseURL + "Juninho_Card_BEM_VINDO_JUNINHO_1920x1080_5dde2fe1ca.png" },
+        { nome: "Kauan", posicao: "Goleiro", idade: 22, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "-", imagem: baseURL + "Kauan_kauan_alves_25_thumb_dfa13aa1a0.jpg" },
+        { nome: "Lucca", posicao: "Centroavante", idade: 22, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 1.00 mi", imagem: baseURL + "Lucca_Banner_Site_Lucca_2000x2500_a363058931.png" },
+        { nome: "Lucca Drummond", posicao: "Centroavante", idade: 21, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 150 mil", imagem: baseURL + "Lucca Drummond_Lucca_d3ae6c3733.jpg" },
+        { nome: "Luis Otávio", posicao: "Volante", idade: 18, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 1.00 mi", imagem: baseURL + "Luis Otávio_Banner_Site_Luis_Otavio_2000x2500_c21b63c691.png" },
+        { nome: "Rafael Borré", posicao: "Centroavante", idade: 29, nacionalidade: "Colômbia", contrato: "31/12/2028", valor: "€ 7.00 mi", imagem: baseURL + "Rafael Borré_Banner_Site_Borre_2000x2500_3f2ad27a43.png" },
+        { nome: "Ramon", posicao: "Lateral Esq.", idade: 24, nacionalidade: "Brasil", contrato: "31/12/2027", valor: "€ 2.00 mi", imagem: baseURL + "Ramon_Card_BEM_VINDO_RAMON_1920x1080_b9628389da.png" },
+        { nome: "Ricardo Mathias", posicao: "Centroavante", idade: 19, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 4.00 mi", imagem: baseURL + "Ricardo Mathias_Banner_Site_Jogadores_2000x2500_Ricardo_M_389908ab5f.png" },
+        { nome: "Richard", posicao: "Volante", idade: 31, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 700 mil", imagem: baseURL + "Richard_Card_BEM_VINDO_RICHARD_1920x1080_029ec9f35f.png" },
+        { nome: "Ronaldo", posicao: "Volante", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 1.00 mi", imagem: baseURL + "Ronaldo_Card_BEM_VINDO_RONALDO_1920x1080_9b6819766a.png" },
+        { nome: "Sergio Rochet", posicao: "Goleiro", idade: 32, nacionalidade: "Uruguai", contrato: "31/12/2026", valor: "€ 3.50 mi", imagem: baseURL + "Sergio Rochet_Banner_Site_Rochet_2000x2500_6534a92fbd.png" },
+        { nome: "Thiago Maia", posicao: "Volante", idade: 28, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 5.00 mi", imagem: baseURL + "Thiago Maia_Banner_Site_Thiago_Maia_2000x2500_cf65040a00.png" },
+        { nome: "Victor Gabriel", posicao: "Zagueiro", idade: 21, nacionalidade: "Brasil", contrato: "31/12/2025", valor: "€ 5.00 mi", imagem: baseURL + "Victor Gabriel_Banner_Site_Victor_Gabriel_2000x2500_4c7e50d995.png" },
+        { nome: "Vitinho", posicao: "Ponta Esquerda", idade: 26, nacionalidade: "Brasil", contrato: "30/06/2026", valor: "€ 7.50 mi", imagem: baseURL + "Vitinho_Card_BEM_VINDO_VITINHO_1920x1080_ed09400f41.png" },
+        { nome: "Vitão", posicao: "Zagueiro", idade: 25, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 12.00 mi", imagem: baseURL + "Vitão_Banner_Site_Vitao_2000x2500_257b549222.png" },
+        { nome: "Wesley", posicao: "Ponta Esquerda", idade: 26, nacionalidade: "Brasil", contrato: "31/12/2026", valor: "€ 9.00 mi", imagem: baseURL + "Wesley_Banner_Site_Wesley_2000x2500_eb031974ca.png" },
+        { nome: "Yago Noal", posicao: "Meia Ofensivo", idade: 18, nacionalidade: "Brasil", contrato: "31/12/2028", valor: "€ 200 mil", imagem: baseURL + "Yago Noal_yago_noal_25_thumb_736be119f9.jpg" },
+        { nome: "Óscar Romero", posicao: "Meia Ofensivo", idade: 33, nacionalidade: "Paraguai", contrato: "31/12/2025", valor: "€ 1.20 mi", imagem: baseURL + "Óscar Romero_Banner_Site_Romero_2000x2500_64a0f7668c.png" }
+    ];
 
-            // Verificando se os números são válidos
-            if (!num1 || !num2 || !num3) {
-                document.getElementById("resultado").innerHTML = "Por favor, insira 3 números!";
-                document.getElementById("playerInfo").innerHTML = "";
-                return;
-            }
+    function gerarJogador() {
+        const num1 = document.getElementById("num1").value;
+        const num2 = document.getElementById("num2").value;
+        const num3 = document.getElementById("num3").value;
 
-            // Gerando um índice aleatório baseado nos números fornecidos
-            const indice = (parseInt(num1) + parseInt(num2) + parseInt(num3)) % jogadores.length;
-
-            // Pegando o jogador da lista
-            const jogador = jogadores[indice];
-
-            // Exibindo o jogador
-            document.getElementById("resultado").innerHTML = `O jogador do Inter é: ${jogador.nome}`;
-            document.getElementById("playerInfo").innerHTML = `
-                <strong>Posição:</strong> ${jogador.posicao}<br>
-                <strong>Idade:</strong> ${jogador.idade} anos<br>
-                <strong>Nacionalidade:</strong> ${jogador.nacionalidade}<br>
-                <strong>Contrato até:</strong> ${jogador.contrato}<br>
-                <strong>Valor de mercado:</strong> ${jogador.valor}
-            `;
+        if (!num1 || !num2 || !num3) {
+            document.getElementById("resultado").innerHTML = "Por favor, insira 3 números!";
+            document.getElementById("playerInfo").innerHTML = "";
+            document.getElementById("playerImage").innerHTML = "";
+            return;
         }
-    </script>
+
+        const indice = (parseInt(num1) + parseInt(num2) + parseInt(num3)) % jogadores.length;
+        const jogador = jogadores[indice];
+
+        document.getElementById("resultado").innerHTML = `O seu jogador do Inter é: ${jogador.nome}`;
+        document.getElementById("playerInfo").innerHTML = `
+            <strong>Posição:</strong> ${jogador.posicao}<br>
+            <strong>Idade:</strong> ${jogador.idade} anos<br>
+            <strong>Nacionalidade:</strong> ${jogador.nacionalidade}<br>
+            <strong>Contrato até:</strong> ${jogador.contrato}<br>
+            <strong>Valor de mercado:</strong> ${jogador.valor}
+        `;
+        document.getElementById("playerImage").innerHTML = `<img src="${jogador.imagem}" alt="${jogador.nome}">`;
+    }
+</script>
 </body>
 </html>
